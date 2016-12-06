@@ -38,6 +38,7 @@ public class Application extends JApplet {
         Main mainView = new Main();
         Products productsPane = new Products();
         ProductEditor productEditorView = new ProductEditor(OpeningMode.ADD_MODE);
+        productsPane.setProductEditorView(productEditorView);
 
         JSplitPane innerSplitPane = createSplitPane();
         innerSplitPane.setLeftComponent(productsPane);

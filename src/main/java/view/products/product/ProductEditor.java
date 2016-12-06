@@ -14,10 +14,16 @@ import java.io.File;
 /**
  * Refactor this class.
  */
-public class ProductEditor extends JPanel {
+public class ProductEditor extends JPanel implements ProductEditorInterface {
     OpeningMode windowMode;
     File imageFile;
+
     ImagePanel picturePanel;
+    JTextField productNameTextField;
+    JFormattedTextField priceTextField;
+    JTextArea descriptionTextArea;
+    JLabel panelNameLabel;
+    JButton addImageButton;
 
     public ProductEditor(OpeningMode openWindowMode)
     {
@@ -38,7 +44,6 @@ public class ProductEditor extends JPanel {
         }
     }
 
-
     private void generateGUI()
     {
         this.setLayout(new GridBagLayout());
@@ -51,7 +56,7 @@ public class ProductEditor extends JPanel {
         constraints.anchor = GridBagConstraints.PAGE_START;
         constraints.ipady = 30;
 
-        JLabel panelNameLabel = new JLabel(getPanelName());
+        panelNameLabel = new JLabel(getPanelName());
         panelNameLabel.setFont(new Font("Times New Roman", Font.BOLD, 14));
         this.add(panelNameLabel, constraints);
 
@@ -70,7 +75,7 @@ public class ProductEditor extends JPanel {
         constraints.gridy = 1;
         constraints.gridx = 1;
 
-        JTextField productNameTextField = new JTextField();
+        productNameTextField = new JTextField();
         productNameTextField.setPreferredSize(new Dimension(100, productNameTextField.getPreferredSize().height));
         this.add(productNameTextField, constraints);
 
@@ -83,7 +88,7 @@ public class ProductEditor extends JPanel {
         constraints.gridy = 2;
         constraints.gridx = 1;
 
-        JFormattedTextField priceTextField = new JFormattedTextField();
+        priceTextField = new JFormattedTextField();
         this.add(priceTextField, constraints);
 
         constraints.gridy = 3;
@@ -92,20 +97,23 @@ public class ProductEditor extends JPanel {
         JLabel imageLabel = new JLabel("image:");
         this.add(imageLabel, constraints);
 
-        constraints.gridy = 3;
+        constraints.gridy = 2;
         constraints.gridx = 2;
+        constraints.gridheight = 2;
+        constraints.insets = new Insets(0, 45, 0, 0);
 
         picturePanel = new ImagePanel(imageFile);
         picturePanel.setBorder(BorderFactory.createLineBorder(Color.BLACK));
-        picturePanel.setPreferredSize(new Dimension(100, 100));
+        picturePanel.setPreferredSize(new Dimension(200, 200));
 
         this.add(picturePanel, constraints);
 
         constraints.gridy = 3;
         constraints.gridx = 1;
-        constraints.insets = new Insets(0, 0, 0, 45);
+        constraints.gridheight = 1;
+        constraints.insets = new Insets(0, 0, 0, 0);
 
-        JButton addImageButton = new JButton("add image");
+        addImageButton = new JButton("add image");
         addImageButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -121,7 +129,6 @@ public class ProductEditor extends JPanel {
         });
         this.add(addImageButton, constraints);
 
-        constraints.insets = new Insets(0, 0, 0, 0);
         constraints.gridy = 4;
         constraints.gridx = 0;
 
@@ -133,13 +140,35 @@ public class ProductEditor extends JPanel {
         constraints.gridwidth = 2;
         constraints.ipady = 50;
 
-        JTextArea descriptionTextArea = new JTextArea();
+        descriptionTextArea = new JTextArea();
         this.add(descriptionTextArea, constraints);
 
     }
 
-    private void packRow(Component...componentsInRow)
-    {
+    @Override
+    public void setName(String name) {
+        this.productNameTextField.setText(name);
+    }
 
+    @Override
+    public void setPrice(String price) {
+        this.priceTextField.setText(price);
+    }
+
+    @Override
+    public void setImage(File image) {
+        this.imageFile = image;
+    }
+
+    @Override
+    public void setDescription(String description) {
+        this.descriptionTextArea.setText(description);
+    }
+
+    @Override
+    public void changeWindowMode(OpeningMode mode) {
+        this.windowMode = mode;
+        this.panelNameLabel.setText(getPanelName());
+        //if(imageFile == null) { this.addImageButton.setText("add"); } else { this.addImageButton.setText("edit"); }
     }
 }
