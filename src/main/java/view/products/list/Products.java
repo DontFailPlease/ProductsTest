@@ -1,11 +1,7 @@
 package view.products.list;
 
 import dao.model.Product;
-import view.products.product.view.ProductEditor;
-import view.products.product.builder.AddModeProductEditor;
-import view.products.product.builder.EditModeProductEditor;
-import view.products.product.builder.Waiter;
-
+import view.products.product.builder.ProductEditorFactory;
 import javax.swing.*;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
@@ -20,8 +16,16 @@ import java.awt.*;
 public class Products extends JPanel{
 
     JScrollPane productsScrollPane;
+
     JTable productsTable;
-    ProductEditor productEditorView;
+
+    public JTable getProductsTable() {
+        return productsTable;
+    }
+
+    public void setProductsTable(JTable productsTable) {
+        this.productsTable = productsTable;
+    }
 
     public Products() throws Exception {
 
@@ -48,13 +52,7 @@ public class Products extends JPanel{
     private void populateProductEditorView(int selectedRow)
     {
         Product selectedProduct = ((ProductsTableModel)productsTable.getModel()).getProduct(selectedRow);
-        Waiter waiter = new Waiter();
-        if(selectedProduct == null) {
-            waiter.setBuilder(new AddModeProductEditor());
-        } else {
-            waiter.setBuilder(new EditModeProductEditor(selectedProduct));
-        }
-        waiter.constructProductEditor();
+        ProductEditorFactory.createEditor(selectedProduct);
     }
 
     public void setSize(Dimension dimension)
@@ -106,13 +104,4 @@ public class Products extends JPanel{
             }
         }
     }
-
-    public ProductEditor getProductEditorView() {
-        return productEditorView;
-    }
-
-    public void setProductEditorView(ProductEditor productEditorView) {
-        this.productEditorView = productEditorView;
-    }
-
 }

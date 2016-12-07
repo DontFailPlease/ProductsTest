@@ -7,14 +7,36 @@ import dao.model.Product;
  */
 public class EditModeProductEditor extends ProductEditorBuilder {
 
-    Product selectedProduct;
+    private final String PANEL_TEXT = "Edit product.";
+    private Product selectedProduct;
+
     public EditModeProductEditor(Product selectedProduct)
     {
         this.selectedProduct = selectedProduct;
     }
 
     @Override
+    public void buildPanelName() {
+        productEditor.setPanelName(PANEL_TEXT);
+    }
+
+    @Override
     public void buildName() {
         productEditor.setName(selectedProduct.getName());
+    }
+
+    @Override
+    public void buildPrice() {
+        productEditor.setPrice(selectedProduct.getPriсe());
+    }
+
+    @Override
+    public void buildImage() {
+        productEditor.setImage(selectedProduct.getImage());
+    }
+
+    @Override
+    public void buildDescription() {
+        productEditor.setDescription(selectedProduct.getDescription());
     }
 }

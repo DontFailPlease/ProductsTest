@@ -2,10 +2,8 @@ package main;
 
 import view.main.Main;
 import view.products.list.Products;
-import view.products.product.builder.ProductEditorSingle;
-import view.products.product.builder.AddModeProductEditor;
-import view.products.product.builder.ProductEditorBuilder;
-import view.products.product.builder.Waiter;
+import view.products.product.builder.*;
+
 import javax.swing.*;
 import javax.swing.border.Border;
 import javax.swing.plaf.basic.BasicSplitPaneDivider;
@@ -37,14 +35,8 @@ public class Application extends JApplet {
     private void initGuiConfigurations() throws Exception {
         Main mainView = new Main();
         Products productsPane = new Products();
-
-        Waiter waiter = new Waiter();
-        ProductEditorBuilder productEditorBuilder = new AddModeProductEditor();
-        waiter.setBuilder(new AddModeProductEditor());
-        waiter.constructProductEditor();
-
-        productsPane.setProductEditorView(ProductEditorSingle.getProductEditor());
-
+        ProductEditorFactory.createEditor();
+        ProductEditorSingle.getProductEditor().setProductsObject(productsPane);
 
         JSplitPane innerSplitPane = createSplitPane();
         innerSplitPane.setLeftComponent(productsPane);

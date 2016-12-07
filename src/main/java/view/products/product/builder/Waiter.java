@@ -14,6 +14,10 @@ public class Waiter {
     public void constructProductEditor()
     {
         builder.createProductEditor();
+        builder.buildPanelName();
         builder.buildName();
+        builder.buildPrice();
+        builder.buildImage();
+        builder.buildDescription();
     }
 }

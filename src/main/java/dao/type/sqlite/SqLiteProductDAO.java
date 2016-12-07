@@ -6,10 +6,8 @@ import dao.model.ProductComparator;
 import javafx.collections.ObservableList;
 import javafx.collections.transformation.SortedList;
 
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
+import java.io.File;
+import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -28,7 +26,7 @@ public class SqLiteProductDAO implements ProductDAO {
 
     public List<Product> getProductList() {
 
-        List<Product> productList = null;
+        List<Product> productList = new ArrayList<Product>();
         Connection connection = null;
         try {
             connection = SqLiteDaoFactory.createConnection();
@@ -36,14 +34,10 @@ public class SqLiteProductDAO implements ProductDAO {
             ResultSet rs = stmt.executeQuery();
             while(rs.next())
             {
-                if(productList == null) {
-                    productList = new ArrayList<Product>();
-                }
-
                 int id = rs.getInt("id");
                 String name = rs.getString("name");
                 int price = rs.getInt("price");
-                String image = rs.getString("image");
+                File image = createFile(rs.getString("image"));
                 String description = rs.getString("description");
                 productList.add(new Product(id, name, price, image, description));
             }
@@ -53,16 +47,78 @@ public class SqLiteProductDAO implements ProductDAO {
         finally
         {
             SqLiteDaoFactory.closeConnection(connection);
-            return productList;
         }
+        return productList;
+    }
+
+    private File createFile(String filePath)
+    {
+        File result = null;
+        try {
+            result = filePath == null ? null : new File(filePath);
+        } catch  (Exception e) {
+            e.printStackTrace();
+        }
+        return result;
     }
 
     public int addProduct(Product product) {
-        return 0;
+        int additionalRowId = -1;
+        final String SQL = "insert into products(name, price, image, description) values(?, ?, ? ,?)";
+        Connection connection = null;
+        try {
+            connection = SqLiteDaoFactory.createConnection();
+            PreparedStatement stmt = connection.prepareStatement(SQL, Statement.RETURN_GENERATED_KEYS);
+            stmt.setString(1, product.getName());
+            stmt.setInt(2, product.getPriсe());
+            stmt.setString(3, product.getImage() == null ? null : product.getImage().toString());
+            stmt.setString(4, product.getDescription());
+            if(stmt.executeUpdate() > 0)
+            {
+                if (stmt.getGeneratedKeys().next()) {
+                    additionalRowId = stmt.getGeneratedKeys().getInt(1);
+                }
+                else
+                {
+                    throw  new SQLException("Can't get id of product.");
+                }
+            }
+            else
+            {
+                throw new SQLException("Can not add product to database.");
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        finally
+        {
+            SqLiteDaoFactory.closeConnection(connection);
+        }
+        return additionalRowId;
     }
 
     public boolean updateProduct(Product product) {
-        return false;
+        boolean isUpdated = false;
+        final String SQL = "update products set name = ?, price = ?, image = ?, description = ? where id = ?";
+        Connection connection = null;
+        try {
+            connection = SqLiteDaoFactory.createConnection();
+            PreparedStatement stmt = connection.prepareStatement(SQL);
+            stmt.setString(1, product.getName());
+            stmt.setInt(2, product.getPriсe());
+            stmt.setString(3, product.getImage() == null ? null : product.getImage().toString());
+            stmt.setString(4, product.getDescription());
+            stmt.setInt(5, product.getId());
+
+            if(stmt.executeUpdate() > 0) {
+                isUpdated = true;
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } finally {
+            SqLiteDaoFactory.closeConnection(connection);
+        }
+        return isUpdated;
     }
 
     public boolean deleteProduct(Product product) {

@@ -1,5 +1,6 @@
 package dao.model;
 
+import java.io.File;
 import java.io.Serializable;
 import java.util.HashMap;
 import java.util.Map;
@@ -17,7 +18,7 @@ public class Product implements Serializable {
     private int id;
     private String name;
     private int price;
-    private String image;
+    private File image;
     private String description;
 
     public int getId() {
@@ -44,11 +45,11 @@ public class Product implements Serializable {
         this.price = priсe;
     }
 
-    public String getImage() {
+    public File getImage() {
         return image;
     }
 
-    public void setImage(String image) {
+    public void setImage(File image) {
         this.image = image;
     }
 
@@ -60,7 +61,15 @@ public class Product implements Serializable {
         this.description = description;
     }
 
-    public Product(int id, String name, int priсe, String image, String description) {
+
+    public Product(String name, int priсe, File image, String description) {
+        this.name = name;
+        this.price = priсe;
+        this.image = image;
+        this.description = description;
+    }
+
+    public Product(int id, String name, int priсe, File image, String description) {
         this.id = id;
         this.name = name;
         this.price = priсe;

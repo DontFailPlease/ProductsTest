@@ -14,9 +14,14 @@ public abstract class ProductEditorBuilder {
     }
 
     public void createProductEditor() {
-        productEditor = ProductEditorSingle.getProductEditor();
+        if (productEditor == null) {
+            productEditor = ProductEditorSingle.getProductEditor();
+        }
     }
 
+    public abstract void buildPanelName();
     public abstract void buildName();
-
+    public abstract void buildPrice();
+    public abstract void buildImage();
+    public abstract void buildDescription();
 }
