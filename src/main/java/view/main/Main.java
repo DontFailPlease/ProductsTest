@@ -1,8 +1,5 @@
 package view.main;
 
-import view.products.product.OpeningMode;
-import view.products.product.ProductEditor;
-
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
@@ -24,7 +21,7 @@ public class Main extends JApplet {
         addButton.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
 
-                new ProductEditor(OpeningMode.ADD_MODE);
+                //new ProductEditor(OpeningMode.ADD_MODE);
             }
         });
 

@@ -7,7 +7,6 @@ import dao.type.mysql.MySqlDaoFactory;
  * Created by di on 29.11.16.
  */
 public abstract class DaoFactory {
-    //public enum DaoType {SqLite, MsSql, MySql};
 
     public abstract PersonDAO getPersonDAO() throws Exception;
     public abstract ProductDAO getProductDAO() throws Exception;

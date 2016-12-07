@@ -1,4 +1,4 @@
-package view.products.product;
+package view.products.product.view;
 
 /**
  * Created by di on 02.12.16.

@@ -1,21 +1,17 @@
-package view.products.product;
+package view.products.product.view;
 
 import custom.components.ImagePanel;
 
 import javax.swing.*;
-import javax.swing.border.Border;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.awt.event.WindowAdapter;
-import java.awt.event.WindowEvent;
 import java.io.File;
 
 /**
  * Refactor this class.
  */
-public class ProductEditor extends JPanel implements ProductEditorInterface {
-    OpeningMode windowMode;
+public class ProductEditor extends JPanel {
     File imageFile;
 
     ImagePanel picturePanel;
@@ -25,24 +21,11 @@ public class ProductEditor extends JPanel implements ProductEditorInterface {
     JLabel panelNameLabel;
     JButton addImageButton;
 
-    public ProductEditor(OpeningMode openWindowMode)
+    public ProductEditor()
     {
-        this.windowMode = openWindowMode;
         generateGUI();
     }
 
-    private String getPanelName()
-    {
-        switch(windowMode)
-        {
-            case ADD_MODE:
-                return "Add new product.";
-            case EDIT_MODE:
-                return "Edit product.";
-            default:
-                return null;
-        }
-    }
 
     private void generateGUI()
     {
@@ -56,7 +39,7 @@ public class ProductEditor extends JPanel implements ProductEditorInterface {
         constraints.anchor = GridBagConstraints.PAGE_START;
         constraints.ipady = 30;
 
-        panelNameLabel = new JLabel(getPanelName());
+        panelNameLabel = new JLabel("add/edit");
         panelNameLabel.setFont(new Font("Times New Roman", Font.BOLD, 14));
         this.add(panelNameLabel, constraints);
 
@@ -149,26 +132,20 @@ public class ProductEditor extends JPanel implements ProductEditorInterface {
     public void setName(String name) {
         this.productNameTextField.setText(name);
     }
+//
+//    @Override
+//    public void setPrice(String price) {
+//        this.priceTextField.setText(price);
+//    }
+//
+//    @Override
+//    public void setImage(File image) {
+//        this.imageFile = image;
+//    }
+//
+//    @Override
+//    public void setDescription(String description) {
+//        this.descriptionTextArea.setText(description);
+//    }
 
-    @Override
-    public void setPrice(String price) {
-        this.priceTextField.setText(price);
-    }
-
-    @Override
-    public void setImage(File image) {
-        this.imageFile = image;
-    }
-
-    @Override
-    public void setDescription(String description) {
-        this.descriptionTextArea.setText(description);
-    }
-
-    @Override
-    public void changeWindowMode(OpeningMode mode) {
-        this.windowMode = mode;
-        this.panelNameLabel.setText(getPanelName());
-        //if(imageFile == null) { this.addImageButton.setText("add"); } else { this.addImageButton.setText("edit"); }
-    }
 }

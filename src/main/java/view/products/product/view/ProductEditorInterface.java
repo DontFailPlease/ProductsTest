@@ -1,4 +1,4 @@
-package view.products.product;
+package view.products.product.view;
 
 import java.io.File;
 

@@ -23,6 +23,11 @@ public class ProductsTableModel implements TableModel {
         this.products = DaoFactory.getDaoFactory(DaoType.SqLite).getProductDAO().getProductList();
     }
 
+    public Product getProduct(int index)
+    {
+        return index >= 0 ? products.get(index) : null;
+    }
+
     @Override
     public int getRowCount() {
 

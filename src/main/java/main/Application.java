@@ -2,9 +2,10 @@ package main;
 
 import view.main.Main;
 import view.products.list.Products;
-import view.products.product.OpeningMode;
-import view.products.product.ProductEditor;
-
+import view.products.product.builder.ProductEditorSingle;
+import view.products.product.builder.AddModeProductEditor;
+import view.products.product.builder.ProductEditorBuilder;
+import view.products.product.builder.Waiter;
 import javax.swing.*;
 import javax.swing.border.Border;
 import javax.swing.plaf.basic.BasicSplitPaneDivider;
@@ -17,7 +18,6 @@ import java.awt.*;
 public class Application extends JApplet {
     private JSplitPane splitPane;
     private final int DIVIDER_SIZE = 2;
-
     public void init()
     {
         Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
@@ -37,12 +37,18 @@ public class Application extends JApplet {
     private void initGuiConfigurations() throws Exception {
         Main mainView = new Main();
         Products productsPane = new Products();
-        ProductEditor productEditorView = new ProductEditor(OpeningMode.ADD_MODE);
-        productsPane.setProductEditorView(productEditorView);
+
+        Waiter waiter = new Waiter();
+        ProductEditorBuilder productEditorBuilder = new AddModeProductEditor();
+        waiter.setBuilder(new AddModeProductEditor());
+        waiter.constructProductEditor();
+
+        productsPane.setProductEditorView(ProductEditorSingle.getProductEditor());
+
 
         JSplitPane innerSplitPane = createSplitPane();
         innerSplitPane.setLeftComponent(productsPane);
-        innerSplitPane.setRightComponent(productEditorView);
+        innerSplitPane.setRightComponent(ProductEditorSingle.getProductEditor());
         innerSplitPane.setDividerLocation(productsPane.getPreferredSize().width);
 
         splitPane = createSplitPane();
